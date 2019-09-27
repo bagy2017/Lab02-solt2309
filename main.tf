@@ -12,7 +12,7 @@ resource "google_compute_instance" "svc-1" {
 
   boot_disk {
     initialize_params {
-      image = "debian-9-stretch-v20190905"
+      image = "debian-cloud/debian-9"
     }
   }
 
