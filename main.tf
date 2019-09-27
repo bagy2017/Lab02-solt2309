@@ -1,8 +1,3 @@
-## If you are adapting this for your project, you will need to change the following values:
-# - project ("proven-sum-252123" in this example)
-# - virtual machine name ("betz4871-testvm1" in this example; change first part to your email ID)
-# - connection user name ("betz4871" in this example; change to your email ID)
-# Terraform supports an external variable file and some of this could be extracted there
 
 provider "google" {
   project = "learned-hour-252201"
@@ -16,8 +11,7 @@ resource "google_compute_instance" "svc-1" {
   zone         = "us-central1-a"
 
   metadata = {
-    #ssh-keys = "bagysn:${file("~/.ssh/google_compute_engine.pub")}"
-    #startup_script = "echo hi > /test.txt" # doesn't work
+    ssh-keys = "bagysn:${file("~/.ssh/google_compute_engine.pub")}"
    }
 
   boot_disk {
@@ -36,11 +30,10 @@ resource "google_compute_instance" "svc-1" {
 
   provisioner "remote-exec" {
     connection {
-      host        = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
-      user        = "bagysn"
-      type        = "ssh"
-      private_key = "${file("~/.ssh/google_compute_engine")}"
-      
+        host        = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
+        user        = "bagysn"
+        type        = "ssh"
+        private_key = "${file("~/.ssh/google_compute_engine")}"
       }
     inline = [
       "mkdir -p ~/svc-01/html",
@@ -60,10 +53,10 @@ resource "google_compute_instance" "svc-1" {
 
   provisioner "remote-exec" {
     connection {
-      host        = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
-      user        = "bagysn"
-      type        = "ssh"
-      private_key = "${file("~/.ssh/google_compute_engine")}"
+        host        = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
+        user        = "bagysn"
+        type        = "ssh"
+        private_key = "${file("~/.ssh/google_compute_engine")}"
       }
     inline = [ 
       "chmod +x ~/svc-01/install.sh",
@@ -71,8 +64,6 @@ resource "google_compute_instance" "svc-1" {
     ]
   }
 
-  #metadata_startup_script = "echo hello > ~/success.txt"
-  
   #service account is essential for file provisioner
   service_account {
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
@@ -90,6 +81,6 @@ resource "google_compute_firewall" "default" {
  }
 }
 
-  output "ip" {
-     value = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
-  }
+output "ip" {
+    value = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
+}
