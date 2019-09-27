@@ -6,8 +6,8 @@ provider "google" {
   zone    = "us-central1-a"
 }
 
-resource "google_compute_instance" "instance-2" {
-  name         = "terraform-instance"
+resource "google_compute_instance" "svc-1" {
+  name         = "solt2309-testvm1"
   machine_type = "f1-micro"
 
   boot_disk {
@@ -23,9 +23,3 @@ resource "google_compute_instance" "instance-2" {
     }
   }
 }
-
-resource "google_compute_network" "vpc_network" {
-  name                    = "terraform-network"
-  auto_create_subnetworks = "true"
-}
-
