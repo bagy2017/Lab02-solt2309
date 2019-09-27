@@ -22,9 +22,8 @@ resource "google_compute_instance" "svc-1" {
     access_config {
     }
   }
-}
 
-provisioner "remote-exec" {
+  provisioner "remote-exec" {
     connection {
       host        = "${google_compute_instance.svc-1.network_interface.0.access_config.0.nat_ip}"
       user        = "solt2309"
